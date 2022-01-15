@@ -1,12 +1,7 @@
-FROM node:lts-fermium
-LABEL maintainer="TP FINAL"
+FROM node:latest 
 
-WORKDIR /repo
+COPY . .
 
-COPY . /repo
+RUN yarn install 
 
-RUN yarn install
-
-RUN yarn build
-
-ENTRYPOINT [ "yarn", "start:prod" ]
+ENTRYPOINT [ "yarn", "start" ]
