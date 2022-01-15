@@ -23,7 +23,23 @@ jobs:
           key: dependencies-{{ checksum "package.json" }}-v1
       - run: yarn lint
       - run: yarn format:check
-
+  server-doc-build:
+    <<: *shared-config
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependencies-{{ checksum "package.json" }}-v1
+      - run: yarn doc:build
+      - run:
+          name: Copy deployment artifacts to workspace
+          command: |
+            cp docs/ /tmp/server-doc -r
+      - store_artifacts:
+          path: /tmp/server-doc
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - server-doc
   back-test-unit:
     <<: *shared-config
     steps:
