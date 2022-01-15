@@ -78,7 +78,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            sudo docker build --cache-from=app -t app .
+            docker build --cache-from=app -t app . ; exit 0
       - deploy:
           name: Publish application to docker hub
           command: |
