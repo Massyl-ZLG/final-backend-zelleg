@@ -1,6 +1,6 @@
 FROM node:lts-fermium as worker 
 
-WORKDIR /nest-server
+WORKDIR /back_app
 
 COPY package*.json ./
 
@@ -17,6 +17,6 @@ ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /nest-server
 
-COPY --from=worker /nest-server/dist ./dist
+COPY --from=worker /back_app/dist ./dist
 
 CMD ["node", "dist/main"]
