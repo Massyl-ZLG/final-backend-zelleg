@@ -1,12 +1,22 @@
-FROM node:lts-fermium
-LABEL maintainer="TP FINAL"
+FROM node:lts-fermium as worker 
 
-WORKDIR /repo
+WORKDIR /nest-server
 
-COPY . /repo
+COPY package*.json ./
 
-RUN yarn install
+RUN yarn install --only=worker
 
-RUN yarn build
+COPY . .
 
-ENTRYPOINT [ "yarn", "start:prod" ]
+RUN yarn run build
+
+FROM node:lts-fermium as build
+
+ARG NODE_ENV=build
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /nest-server
+
+COPY --from=worker /nest-server/dist ./dist
+
+CMD ["node", "dist/main"]
